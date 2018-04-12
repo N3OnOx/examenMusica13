@@ -6,6 +6,7 @@ public class Main {
         int opcion;
         CantanteController cantanteController = new CantanteController();
         GrupoController grupoController = new GrupoController();
+        CiudadController ciudadController = new CiudadController();
         do {
             mostrarMenu();
             opcion = sn.nextInt();
@@ -17,8 +18,10 @@ public class Main {
                     grupoController.altaGrupo();
                     break;
                 case 3:
+                    ciudadController.altaCiudad();
                     break;
                 case 4:
+                    cantanteController.asignarCantanteGrupo();
                     break;
                 case 5:
                     break;
@@ -39,20 +42,20 @@ public class Main {
                     System.out.println("Opción inválida");
                     break;
             }
-        }while (opcion!=12);
+        }while (opcion!=11);
     }
     private static void mostrarMenu(){
-        System.out.println("1.  Crear nuevo cantante");
-        System.out.println("2.  ");
-        System.out.println("3.  ");
-        System.out.println("4.  ");
+        System.out.println("1.  Alta cantante");
+        System.out.println("2.  Alta grupo");
+        System.out.println("3.  Alta ciudad");
+        System.out.println("4.  Asignar cantantes a grupos");
         System.out.println("5.  ");
         System.out.println("6.  ");
         System.out.println("7.  ");
         System.out.println("8.  ");
         System.out.println("9.  ");
         System.out.println("10.  ");
-        System.out.println(".  Salir");
+        System.out.println("11.  Salir");
 
     }
 }

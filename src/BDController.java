@@ -4,6 +4,8 @@ public class BDController {
     private Connection conexion;
     private PreparedStatement existeCantante;
     private PreparedStatement existeGrupo;
+    private PreparedStatement existeCiudad;
+    private PreparedStatement existeCantYGrupo;
 
     BDController(){
         try {
@@ -13,6 +15,10 @@ public class BDController {
             this.existeCantante = conexion.prepareStatement(SQLExisteCantante);
             String SQLExisteGrupo = "select * from grupos where cod_grupo = ?";
             this.existeGrupo = conexion.prepareStatement(SQLExisteGrupo);
+            String SQLExisteCiudad = "select * from ciudades where cod_ciudad = ?";
+            this.existeCiudad = conexion.prepareStatement(SQLExisteCiudad);
+            String SQLExisteCantYGrupo = "select * from cantan where cod_cantante = ? and cod_grupo = ?";
+            this.existeCantYGrupo = conexion.prepareStatement(SQLExisteCantYGrupo);
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -23,6 +29,7 @@ public class BDController {
         try {
             Statement ms = this.conexion.createStatement();
             ms.executeUpdate(sql);
+            ms.close();
         }catch (SQLException e){
             System.out.println("Error: "+e.getMessage());
         }
@@ -32,6 +39,7 @@ public class BDController {
         try {
             Statement ms = this.conexion.createStatement();
             ms.executeUpdate(sql);
+            ms.close();
         }catch (SQLException e){
             System.out.println("Error: "+e.getMessage());
         }
@@ -41,10 +49,22 @@ public class BDController {
         try {
             Statement ms = this.conexion.createStatement();
             ms.executeUpdate(sql);
+            ms.close();
         }catch (SQLException e){
             System.out.println("Error: "+e.getMessage());
         }
     }
+    public void altaCiudad(Ciudad ciudad){
+        String sql = "insert into ciudades values ("+ciudad.getCod_ciudad()+","+ciudad.getNum_hab()+",'"+ciudad.getNombre()+"')";
+        try {
+            Statement ms = conexion.createStatement();
+            ms.executeUpdate(sql);
+            ms.close();
+        }catch (SQLException e){
+            System.out.println("Error: "+e.getMessage());
+        }
+    }
+
 
     public boolean existeCantante(int cod_cantante){
         boolean existe = true;
@@ -67,6 +87,39 @@ public class BDController {
         try {
             existeGrupo.setInt(1, cod_grupo);
             ResultSet rs = existeGrupo.executeQuery();
+            if (rs.first() == true){
+                existe = true;
+            }else{
+                existe = false;
+            }
+            rs.close();
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return existe;
+    }
+    public boolean existeCiudad(int cod_ciudad){
+        boolean existe = true;
+        try {
+            existeCiudad.setInt(1, cod_ciudad);
+            ResultSet rs = existeCiudad.executeQuery();
+            if (rs.first() == true){
+                existe = true;
+            }else{
+                existe = false;
+            }
+            rs.close();
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return existe;
+    }
+    public boolean existeCantYGrupo(int cod_cantante, int cod_grupo){
+        boolean existe = true;
+        try {
+            existeCantYGrupo.setInt(1, cod_cantante);
+            existeCantYGrupo.setInt(2, cod_grupo);
+            ResultSet rs = existeCantYGrupo.executeQuery();
             if (rs.first() == true){
                 existe = true;
             }else{
