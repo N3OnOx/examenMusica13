@@ -7,6 +7,7 @@ public class Main {
         CantanteController cantanteController = new CantanteController();
         GrupoController grupoController = new GrupoController();
         CiudadController ciudadController = new CiudadController();
+        ConciertoController conciertoController = new ConciertoController();
         do {
             mostrarMenu();
             opcion = sn.nextInt();
@@ -24,6 +25,7 @@ public class Main {
                     cantanteController.asignarCantanteGrupo();
                     break;
                 case 5:
+                    conciertoController.altaConcierto();
                     break;
                 case 6:
                     break;
@@ -49,7 +51,7 @@ public class Main {
         System.out.println("2.  Alta grupo");
         System.out.println("3.  Alta ciudad");
         System.out.println("4.  Asignar cantantes a grupos");
-        System.out.println("5.  ");
+        System.out.println("5.  Alta Concierto");
         System.out.println("6.  ");
         System.out.println("7.  ");
         System.out.println("8.  ");

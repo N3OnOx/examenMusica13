@@ -6,6 +6,7 @@ public class BDController {
     private PreparedStatement existeGrupo;
     private PreparedStatement existeCiudad;
     private PreparedStatement existeCantYGrupo;
+    private PreparedStatement existeConcierto;
 
     BDController(){
         try {
@@ -13,12 +14,14 @@ public class BDController {
             this.conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/musica", "root","");
             String SQLExisteCantante = "select * from cantantes where cod_cantante = ?";
             this.existeCantante = conexion.prepareStatement(SQLExisteCantante);
-            String SQLExisteGrupo = "select * from grupos where cod_grupo = ?";
+            String SQLExisteGrupo = "select * from grupos where cod_grupo = ?;";
             this.existeGrupo = conexion.prepareStatement(SQLExisteGrupo);
-            String SQLExisteCiudad = "select * from ciudades where cod_ciudad = ?";
+            String SQLExisteCiudad = "select * from ciudades where cod_ciudad = ?;";
             this.existeCiudad = conexion.prepareStatement(SQLExisteCiudad);
-            String SQLExisteCantYGrupo = "select * from cantan where cod_cantante = ? and cod_grupo = ?";
+            String SQLExisteCantYGrupo = "select * from cantan where cod_cantante = ? and cod_grupo = ?;";
             this.existeCantYGrupo = conexion.prepareStatement(SQLExisteCantYGrupo);
+            String SQLExisteConcierto = "select * from conciertos where cod_concierto = ?;";
+            this.existeConcierto = conexion.prepareStatement(SQLExisteConcierto);
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -56,6 +59,16 @@ public class BDController {
     }
     public void altaCiudad(Ciudad ciudad){
         String sql = "insert into ciudades values ("+ciudad.getCod_ciudad()+","+ciudad.getNum_hab()+",'"+ciudad.getNombre()+"')";
+        try {
+            Statement ms = conexion.createStatement();
+            ms.executeUpdate(sql);
+            ms.close();
+        }catch (SQLException e){
+            System.out.println("Error: "+e.getMessage());
+        }
+    }
+    public void altaConcierto(Concierto concierto){
+        String sql = "insert into conciertos values ("+concierto.getCod_concierto()+",'"+concierto.getFecha()+"',"+concierto.getCod_grupo()+","+concierto.getCod_ciudad()+")";
         try {
             Statement ms = conexion.createStatement();
             ms.executeUpdate(sql);
@@ -131,5 +144,20 @@ public class BDController {
         }
         return existe;
     }
-
+    public boolean existeConcierto(int cod_concierto){
+        boolean existe = true;
+        try {
+            existeConcierto.setInt(1, cod_concierto);
+            ResultSet rs = existeConcierto.executeQuery();
+            if (rs.first() == true){
+                existe = true;
+            }else{
+                existe = false;
+            }
+            rs.close();
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return existe;
+    }
 }
