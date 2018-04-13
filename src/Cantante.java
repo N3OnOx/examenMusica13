@@ -7,8 +7,12 @@ public class Cantante {
     public Cantante() {
     }
 
-    public Cantante(int cod_cantante, String nombre, int edad, int cod_ciudad) {
+    public Cantante(int cod_cantante, String nombre) {
         this.cod_cantante = cod_cantante;
+        this.nombre = nombre;
+    }
+
+    public Cantante(String nombre, int edad, int cod_ciudad) {
         this.nombre = nombre;
         this.edad = edad;
         this.cod_ciudad = cod_ciudad;

@@ -7,11 +7,18 @@ public class CantanteController {
         this.cantanteController = new BDController();
     }
 
+    public BDController getCantanteController() {
+        return cantanteController;
+    }
+
+    public void setCantanteController(BDController cantanteController) {
+        this.cantanteController = cantanteController;
+    }
+
     public void altaCantante(){
         Scanner sc = new Scanner(System.in);
         Scanner sn = new Scanner(System.in);
-        int cod_cantante, cod_grupo, cod_ciudad;
-        String resp;
+        int cod_cantante, cod_ciudad;
         Cantante cantante = new Cantante();
         System.out.println("Dime el codigo del cantante: ");
         cod_cantante = sn.nextInt();
@@ -22,24 +29,13 @@ public class CantanteController {
             System.out.println("Dime su edad: ");
             cantante.setEdad(sn.nextInt());
             System.out.println("Dime su codigo de ciudad: ");
+            System.out.println();
+            for (String ciudad : this.cantanteController.ciudades()) {
+                System.out.println(ciudad);
+            }
             cod_ciudad = sn.nextInt();
             if (this.cantanteController.existeCiudad(cod_ciudad)) {
                 cantante.setCod_ciudad(cod_ciudad);
-                System.out.println("Desea introducir grupos en el cantante?");
-                resp = sc.nextLine();
-                if (resp.equalsIgnoreCase("si")) {
-                    do {
-                        System.out.println("Dime el codigo de grupo donde canta: ");
-                        cod_grupo = sn.nextInt();
-                        if (this.cantanteController.existeGrupo(cod_grupo)) {
-                            this.cantanteController.altaCantan(cod_cantante, cod_grupo);
-                        } else {
-                            System.out.println("No existe ese grupo");
-                        }
-                        System.out.println("Introducir otro grupo?");
-                        resp = sc.nextLine();
-                    } while (resp.equalsIgnoreCase("si"));
-                }
                 this.cantanteController.altaCantante(cantante);
             }else{
                 System.out.println("No existe ese código de ciudad");
@@ -49,19 +45,9 @@ public class CantanteController {
         }
     }
 
-    public void asignarCantanteGrupo(){
-        Scanner sn = new Scanner(System.in);
-        int cod_cantante, cod_grupo;
-        System.out.println("Dime el codigo del cantante a asignar: ");
-        cod_cantante = sn.nextInt();
-        if (this.cantanteController.existeCantante(cod_cantante)){
-            System.out.println("Dime el codigo de grupo al que pertenece: ");
-            cod_grupo = sn.nextInt();
-            if (this.cantanteController.existeGrupo(cod_grupo) && !this.cantanteController.existeCantYGrupo(cod_cantante, cod_grupo)){
-                this.cantanteController.altaCantan(cod_cantante,cod_grupo);
-            }else{
-                System.out.println("Es posible que el grupo no exista o que ya esté asignado ese cantante al grupo.");
-            }
+    public void listadoCantantes(){
+        for (Cantante cantante : this.cantanteController.listadoCantantes()) {
+            System.out.println("Cantante: "+cantante.getNombre() + " - Edad: "+cantante.getEdad() + " - Ciudad: "+this.cantanteController.traductorCiudad(cantante.getCod_ciudad()));
         }
     }
 }

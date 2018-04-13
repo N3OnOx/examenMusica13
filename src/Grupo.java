@@ -12,6 +12,11 @@ public class Grupo {
         this.estilo = estilo;
     }
 
+    public Grupo(int cod_grupo, String nombre) {
+        this.cod_grupo = cod_grupo;
+        this.nombre = nombre;
+    }
+
     public int getCod_grupo() {
         return cod_grupo;
     }
